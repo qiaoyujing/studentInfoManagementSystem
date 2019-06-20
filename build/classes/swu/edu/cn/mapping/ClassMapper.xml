@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="swu.edu.cn.dao.ClassMapper">
+  <resultMap id="BaseResultMap" type="swu.edu.cn.entity.ClassInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="studentNum" jdbcType="INTEGER" property="studentnum" />
+    <result column="manager_id" jdbcType="VARCHAR" property="managerId" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="slogan" jdbcType="VARCHAR" property="slogan" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="TEACHER_ID" jdbcType="VARCHAR" property="teacherId" />
+    <result column="graduateYear" jdbcType="DATE" property="graduateyear" />
+    <result column="Input_id" jdbcType="INTEGER" property="inputId" />
+    <result column="Input_time" jdbcType="DATE" property="inputTime" />
+    <result column="Modify_id" jdbcType="INTEGER" property="modifyId" />
+    <result column="Mofify_time" jdbcType="DATE" property="mofifyTime" />
+    <result column="Delete_id" jdbcType="INTEGER" property="deleteId" />
+    <result column="Delete_time" jdbcType="DATE" property="deleteTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, code, name, studentNum, manager_id, description, slogan, url, TEACHER_ID, 
+    graduateYear, Input_id, Input_time, Modify_id, Mofify_time, Delete_id, Delete_time
+  </sql>
+   <select id="selectCodeAndNameByParentCode" parameterType="String" resultMap="BaseResultMap">
+	  select *
+	  FROM class
+	  where LEFT(CODE,6)=#{_parentCode}
+  </select> 
+  <select id="selectMaxCode" resultType="java.lang.Integer">
+	  select max(RIGHT(CODE,3)+0) AS code2 
+	  FROM class 
+  </select>
+   <select id="selectAll"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from class
+  </select>
+  <select id="selectAllPage"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from class
+    LIMIT #{0},#{1}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from class
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from class
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="swu.edu.cn.entity.ClassInfo">
+    insert into class (id, code, name, 
+      studentNum,  manager_id, 
+      description, slogan, url, 
+      TEACHER_ID, graduateYear, Input_id, 
+      Input_time, Modify_id, Mofify_time, 
+      Delete_id, Delete_time)
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{studentnum,jdbcType=INTEGER},  #{managerId,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{slogan,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{teacherId,jdbcType=VARCHAR}, #{graduateyear,jdbcType=DATE}, #{inputId,jdbcType=INTEGER}, 
+      #{inputTime,jdbcType=DATE}, #{modifyId,jdbcType=INTEGER}, #{mofifyTime,jdbcType=DATE}, 
+      #{deleteId,jdbcType=INTEGER}, #{deleteTime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="swu.edu.cn.entity.ClassInfo">
+    insert into class
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="studentnum != null">
+        studentNum,
+      </if>
+      <if test="managerId != null">
+        manager_id,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="slogan != null">
+        slogan,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="teacherId != null">
+        TEACHER_ID,
+      </if>
+      <if test="graduateyear != null">
+        graduateYear,
+      </if>
+      <if test="inputId != null">
+        Input_id,
+      </if>
+      <if test="inputTime != null">
+        Input_time,
+      </if>
+      <if test="modifyId != null">
+        Modify_id,
+      </if>
+      <if test="mofifyTime != null">
+        Mofify_time,
+      </if>
+      <if test="deleteId != null">
+        Delete_id,
+      </if>
+      <if test="deleteTime != null">
+        Delete_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="studentnum != null">
+        #{studentnum,jdbcType=INTEGER},
+      </if>
+      
+      <if test="managerId != null">
+        #{managerId,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="slogan != null">
+        #{slogan,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherId != null">
+        #{teacherId,jdbcType=VARCHAR},
+      </if>
+      <if test="graduateyear != null">
+        #{graduateyear,jdbcType=DATE},
+      </if>
+      <if test="inputId != null">
+        #{inputId,jdbcType=INTEGER},
+      </if>
+      <if test="inputTime != null">
+        #{inputTime,jdbcType=DATE},
+      </if>
+      <if test="modifyId != null">
+        #{modifyId,jdbcType=INTEGER},
+      </if>
+      <if test="mofifyTime != null">
+        #{mofifyTime,jdbcType=DATE},
+      </if>
+      <if test="deleteId != null">
+        #{deleteId,jdbcType=INTEGER},
+      </if>
+      <if test="deleteTime != null">
+        #{deleteTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="swu.edu.cn.entity.ClassInfo">
+    update class
+    <set>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="studentnum != null">
+        studentNum = #{studentnum,jdbcType=INTEGER},
+      </if>
+      <if test="managerId != null">
+        manager_id = #{managerId,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="slogan != null">
+        slogan = #{slogan,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherId != null">
+        TEACHER_ID = #{teacherId,jdbcType=VARCHAR},
+      </if>
+      <if test="graduateyear != null">
+        graduateYear = #{graduateyear,jdbcType=DATE},
+      </if>
+      <if test="inputId != null">
+        Input_id = #{inputId,jdbcType=INTEGER},
+      </if>
+      <if test="inputTime != null">
+        Input_time = #{inputTime,jdbcType=DATE},
+      </if>
+      <if test="modifyId != null">
+        Modify_id = #{modifyId,jdbcType=INTEGER},
+      </if>
+      <if test="mofifyTime != null">
+        Mofify_time = #{mofifyTime,jdbcType=DATE},
+      </if>
+      <if test="deleteId != null">
+        Delete_id = #{deleteId,jdbcType=INTEGER},
+      </if>
+      <if test="deleteTime != null">
+        Delete_time = #{deleteTime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="swu.edu.cn.entity.ClassInfo">
+    update class
+    set code = #{code,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      studentNum = #{studentnum,jdbcType=INTEGER},
+      manager_id = #{managerId,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      slogan = #{slogan,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      TEACHER_ID = #{teacherId,jdbcType=VARCHAR},
+      graduateYear = #{graduateyear,jdbcType=DATE},
+      Input_id = #{inputId,jdbcType=INTEGER},
+      Input_time = #{inputTime,jdbcType=DATE},
+      Modify_id = #{modifyId,jdbcType=INTEGER},
+      Mofify_time = #{mofifyTime,jdbcType=DATE},
+      Delete_id = #{deleteId,jdbcType=INTEGER},
+      Delete_time = #{deleteTime,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

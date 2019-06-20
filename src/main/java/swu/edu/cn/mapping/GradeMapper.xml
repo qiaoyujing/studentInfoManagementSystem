@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="swu.edu.cn.dao.GradeMapper">
+  <resultMap id="BaseResultMap" type="swu.edu.cn.entity.Grade">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="student_id" jdbcType="INTEGER" property="studentId" />
+    <result column="course_id" jdbcType="INTEGER" property="courseId" />
+    <result column="testGrade" jdbcType="DOUBLE" property="testgrade" />
+    <result column="examGrade" jdbcType="DOUBLE" property="examgrade" />
+    <result column="allgrade" jdbcType="DOUBLE" property="allgrade" />
+    <result column="academicYear" jdbcType="VARCHAR" property="academicyear" />
+    <result column="Input_id" jdbcType="INTEGER" property="inputId" />
+    <result column="Input_time" jdbcType="DATE" property="inputTime" />
+    <result column="Modify_id" jdbcType="INTEGER" property="modifyId" />
+    <result column="Modify_time" jdbcType="DATE" property="modifyTime" />
+    <result column="Delete_id" jdbcType="INTEGER" property="deleteId" />
+    <result column="Delete_time" jdbcType="DATE" property="deleteTime" />
+    <result column="studentCode" jdbcType="VARCHAR" property="studentCode"/>
+    <result column="studentName" jdbcType="VARCHAR" property="studentName"/>
+    <result column="courseCode" jdbcType="VARCHAR" property="courseCode"/>
+    <result column="courseName" jdbcType="VARCHAR" property="courseName"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, student_id, course_id, testGrade, examGrade, allgrade, academicYear, Input_id, 
+    Input_time, Modify_id, Modify_time, Delete_id, Delete_time
+  </sql>
+    <select id="selectAll" resultMap="BaseResultMap">
+    SELECT g.*,s.`code` AS studentCode ,s.`name` AS studentName,c.`code` AS courseCode,c.`name` AS courseName 
+	FROM studentbaseinfo s,course c,grade g
+	WHERE 1=1
+	AND s.`id`=g.`student_id` 
+	AND c.`id`=g.`course_id`
+	ORDER BY g.`id`
+  </select>
+  <select id="selectAllPage" resultMap="BaseResultMap">
+    SELECT g.*,s.`code` AS studentCode ,s.`name` AS studentName,c.`code` AS courseCode,c.`name` AS courseName 
+	FROM studentbaseinfo s,course c,grade g
+	WHERE 1=1
+	AND s.`id`=g.`student_id` 
+	AND c.`id`=g.`course_id`
+	LIMIT #{0},#{1}
+  </select>
+    <select id="selectAllGrade" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT g.*,s.`code` AS studentCode ,s.`name` AS studentName,c.`code` AS courseCode,c.`name` AS courseName 
+	FROM studentbaseinfo s,course c,grade g
+	WHERE 1=1
+	AND s.`id`=g.`student_id` 
+	AND c.`id`=g.`course_id`
+	<if test="getCourseId >=1 ">
+    AND g.`course_id`=#{getCourseId,jdbcType=INTEGER}
+    </if>
+    <if test="studentIdColl!=null and studentIdColl.size>0">
+    AND g.`student_id` in
+    <foreach collection="studentIdColl" index="index" item="item" open="(" separator="," close=")">
+    #{item}
+    </foreach>
+	</if>
+	<if test='getacademicyear != null and ""!=getacademicyear'>
+    AND g.`academicYear`=#{getacademicyear,jdbcType=VARCHAR}
+    </if>
+	</select>
+   <select id="selectAllGrade2" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT g.*,s.`code` AS studentCode ,s.`name` AS studentName,c.`code` AS courseCode,c.`name` AS courseName 
+	FROM studentbaseinfo s,course c,grade g
+	WHERE 1=1
+	AND s.`id`=g.`student_id` 
+	AND c.`id`=g.`course_id`
+	<if test="getCourseId>=1 ">
+    AND g.`course_id`=#{getCourseId,jdbcType=INTEGER}
+    </if>
+    <if test="studentIdColl!=null and studentIdColl.size>0">
+    AND g.`student_id` in 
+    <foreach collection="studentIdColl" index="index" item="item" open="(" separator="," close=")">
+    #{item}
+    </foreach>
+	</if>
+    <if test='getacademicyear != null and ""!=getacademicyear'>
+    AND g.`academicYear`=#{getacademicyear,jdbcType=VARCHAR}
+    </if>
+    limit #{startRow,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT g.*,s.`code` AS studentCode ,s.`name` AS studentName,c.`code` AS courseCode,c.`name` AS courseName 
+	FROM studentbaseinfo s,course c,grade g
+	WHERE 1=1
+	AND s.`id`=g.`student_id` 
+	AND c.`id`=g.`course_id`
+    AND g.`id` = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from grade
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteAllGradeByStudentId" parameterType="java.lang.Integer">
+    delete from grade
+    where student_id = #{studentId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="swu.edu.cn.entity.Grade">
+      insert into grade (id, student_id, course_id, 
+      testGrade, examGrade, allgrade, 
+      academicYear, Input_id, Input_time, 
+      Modify_id, Modify_time, Delete_id, 
+      Delete_time)
+    values (#{id,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, 
+      #{testgrade,jdbcType=DOUBLE}, #{examgrade,jdbcType=DOUBLE}, #{allgrade,jdbcType=DOUBLE}, 
+      #{academicyear,jdbcType=VARCHAR}, #{inputId,jdbcType=INTEGER}, #{inputTime,jdbcType=DATE}, 
+      #{modifyId,jdbcType=INTEGER}, #{modifyTime,jdbcType=DATE}, #{deleteId,jdbcType=INTEGER}, 
+      #{deleteTime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="swu.edu.cn.entity.Grade">
+    insert into grade
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="studentId != null">
+        student_id,
+      </if>
+      <if test="courseId != null">
+        course_id,
+      </if>
+      <if test="testgrade != null">
+        testGrade,
+      </if>
+      <if test="examgrade != null">
+        examGrade,
+      </if>
+      <if test="allgrade != null">
+        allgrade,
+      </if>
+      <if test="academicyear != null">
+        academicYear,
+      </if>
+      <if test="inputId != null">
+        Input_id,
+      </if>
+      <if test="inputTime != null">
+        Input_time,
+      </if>
+      <if test="modifyId != null">
+        Modify_id,
+      </if>
+      <if test="modifyTime != null">
+        Modify_time,
+      </if>
+      <if test="deleteId != null">
+        Delete_id,
+      </if>
+      <if test="deleteTime != null">
+        Delete_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="studentId != null">
+        #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null">
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="testgrade != null">
+        #{testgrade,jdbcType=DOUBLE},
+      </if>
+      <if test="examgrade != null">
+        #{examgrade,jdbcType=DOUBLE},
+      </if>
+      <if test="allgrade != null">
+        #{allgrade,jdbcType=DOUBLE},
+      </if>
+      <if test="academicyear != null">
+        #{academicyear,jdbcType=VARCHAR},
+      </if>
+      <if test="inputId != null">
+        #{inputId,jdbcType=INTEGER},
+      </if>
+      <if test="inputTime != null">
+        #{inputTime,jdbcType=DATE},
+      </if>
+      <if test="modifyId != null">
+        #{modifyId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=DATE},
+      </if>
+      <if test="deleteId != null">
+        #{deleteId,jdbcType=INTEGER},
+      </if>
+      <if test="deleteTime != null">
+        #{deleteTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="swu.edu.cn.entity.Grade">
+    update grade
+    <set>
+      <if test="studentId != null">
+        student_id = #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null">
+        course_id = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="testgrade != null">
+        testGrade = #{testgrade,jdbcType=DOUBLE},
+      </if>
+      <if test="examgrade != null">
+        examGrade = #{examgrade,jdbcType=DOUBLE},
+      </if>
+      <if test="allgrade != null">
+        allgrade = #{allgrade,jdbcType=DOUBLE},
+      </if>
+      <if test="academicyear != null">
+        academicYear = #{academicyear,jdbcType=VARCHAR},
+      </if>
+      <if test="inputId != null">
+        Input_id = #{inputId,jdbcType=INTEGER},
+      </if>
+      <if test="inputTime != null">
+        Input_time = #{inputTime,jdbcType=DATE},
+      </if>
+      <if test="modifyId != null">
+        Modify_id = #{modifyId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyTime != null">
+        Modify_time = #{modifyTime,jdbcType=DATE},
+      </if>
+      <if test="deleteId != null">
+        Delete_id = #{deleteId,jdbcType=INTEGER},
+      </if>
+      <if test="deleteTime != null">
+        Delete_time = #{deleteTime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="swu.edu.cn.entity.Grade">
+    update grade
+    set student_id = #{studentId,jdbcType=INTEGER},
+      course_id = #{courseId,jdbcType=INTEGER},
+      testGrade = #{testgrade,jdbcType=DOUBLE},
+      examGrade = #{examgrade,jdbcType=DOUBLE},
+      allgrade = #{allgrade,jdbcType=DOUBLE},
+      academicYear = #{academicyear,jdbcType=VARCHAR},
+      Input_id = #{inputId,jdbcType=INTEGER},
+      Input_time = #{inputTime,jdbcType=DATE},
+      Modify_id = #{modifyId,jdbcType=INTEGER},
+      Modify_time = #{modifyTime,jdbcType=DATE},
+      Delete_id = #{deleteId,jdbcType=INTEGER},
+      Delete_time = #{deleteTime,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

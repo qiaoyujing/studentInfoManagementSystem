@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="swu.edu.cn.dao.StudentBaseInfoMapper">
+  <resultMap id="BaseResultMap" type="swu.edu.cn.entity.StudentBaseInfo">
+       <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="nikename" jdbcType="VARCHAR" property="nikename" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="dayofbirth" jdbcType="DATE" property="dayofbirth" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="exmail" jdbcType="VARCHAR" property="exmail" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="Input_id" jdbcType="INTEGER" property="inputId" />
+    <result column="Input_time" jdbcType="DATE" property="inputTime" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="enrollmentYear" jdbcType="DATE" property="enrollmentyear" />
+    <result column="schoolRoll_status" jdbcType="INTEGER" property="schoolrollStatus" />
+    <result column="ethnic" jdbcType="VARCHAR" property="ethnic" />
+    <result column="politicalstatus" jdbcType="VARCHAR" property="politicalstatus" />
+    <result column="class_id" jdbcType="INTEGER" property="classId" />
+    <result column="major" jdbcType="VARCHAR" property="major" />
+    <result column="degree" jdbcType="VARCHAR" property="degree" />
+    <result column="nationality" jdbcType="VARCHAR" property="nationality" />
+    <result column="Modify_id" jdbcType="INTEGER" property="modifyId" />
+    <result column="Modify_time" jdbcType="DATE" property="modifyTime" />
+    <result column="Delete_id" jdbcType="INTEGER" property="deleteId" />
+    <result column="Delete_time" jdbcType="DATE" property="deleteTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id,`name`, `code`, nikename, address, sex, dayofbirth, phone, exmail, role_id, Input_id, 
+    Input_time, `password`, enrollmentYear, schoolRoll_status, ethnic, politicalstatus, 
+    class_id, major, degree, nationality, Modify_id, Modify_time, Delete_id, Delete_time
+  </sql>
+  <select id="selectMaxCode" resultType="java.lang.Integer">
+	  select max(RIGHT(CODE,3)+0) AS code2 
+	  FROM studentbaseinfo 
+  </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from studentbaseinfo
+  </select>
+  <select id="selectAllPage" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from studentbaseinfo
+    LIMIT #{0},#{1}
+  </select>
+  <select id="getStudentBaseInfoByClassID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from studentbaseinfo
+    where class_id = #{classId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from studentbaseinfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+   <select id="selectByCode" parameterType="String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from studentbaseinfo
+    where `code` = #{_code,jdbcType=VARCHAR}
+  </select>
+   <select id="selectByPartCode"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from studentbaseinfo
+    where `code` like '%${param1}%'
+    limit ${param2},${param3}
+  </select> 
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from studentbaseinfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="swu.edu.cn.entity.StudentBaseInfo">
+    insert into studentbaseinfo (id, name, code, 
+      nikename, address, sex, 
+      dayofbirth, phone, exmail, 
+      role_id, Input_id, Input_time, 
+      password, enrollmentYear, schoolRoll_status, 
+      ethnic, politicalstatus, class_id, 
+      major, degree, nationality, 
+      Modify_id, Modify_time, Delete_id, 
+      Delete_time)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{nikename,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
+      #{dayofbirth,jdbcType=DATE}, #{phone,jdbcType=VARCHAR}, #{exmail,jdbcType=VARCHAR}, 
+      #{roleId,jdbcType=INTEGER}, #{inputId,jdbcType=INTEGER}, #{inputTime,jdbcType=DATE}, 
+      #{password,jdbcType=VARCHAR}, #{enrollmentyear,jdbcType=DATE}, #{schoolrollStatus,jdbcType=INTEGER}, 
+      #{ethnic,jdbcType=VARCHAR}, #{politicalstatus,jdbcType=VARCHAR}, #{classId,jdbcType=INTEGER}, 
+      #{major,jdbcType=VARCHAR}, #{degree,jdbcType=VARCHAR}, #{nationality,jdbcType=VARCHAR}, 
+      #{modifyId,jdbcType=INTEGER}, #{modifyTime,jdbcType=DATE}, #{deleteId,jdbcType=INTEGER}, 
+      #{deleteTime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="swu.edu.cn.entity.StudentBaseInfo">
+    insert into studentbaseinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="nikename != null">
+        nikename,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="dayofbirth != null">
+        dayofbirth,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="exmail != null">
+        exmail,
+      </if>
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="inputId != null">
+        Input_id,
+      </if>
+      <if test="inputTime != null">
+        Input_time,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="enrollmentyear != null">
+        enrollmentYear,
+      </if>
+      <if test="schoolrollStatus != null">
+        schoolRoll_status,
+      </if>
+      <if test="ethnic != null">
+        ethnic,
+      </if>
+      <if test="politicalstatus != null">
+        politicalstatus,
+      </if>
+      <if test="classId != null">
+        class_id,
+      </if>
+      <if test="major != null">
+        major,
+      </if>
+      <if test="degree != null">
+        degree,
+      </if>
+      <if test="nationality != null">
+        nationality,
+      </if>
+      <if test="modifyId != null">
+        Modify_id,
+      </if>
+      <if test="modifyTime != null">
+        Modify_time,
+      </if>
+      <if test="deleteId != null">
+        Delete_id,
+      </if>
+      <if test="deleteTime != null">
+        Delete_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="nikename != null">
+        #{nikename,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="dayofbirth != null">
+        #{dayofbirth,jdbcType=DATE},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="exmail != null">
+        #{exmail,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="inputId != null">
+        #{inputId,jdbcType=INTEGER},
+      </if>
+      <if test="inputTime != null">
+        #{inputTime,jdbcType=DATE},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="enrollmentyear != null">
+        #{enrollmentyear,jdbcType=DATE},
+      </if>
+      <if test="schoolrollStatus != null">
+        #{schoolrollStatus,jdbcType=INTEGER},
+      </if>
+      <if test="ethnic != null">
+        #{ethnic,jdbcType=VARCHAR},
+      </if>
+      <if test="politicalstatus != null">
+        #{politicalstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="classId != null">
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="major != null">
+        #{major,jdbcType=VARCHAR},
+      </if>
+      <if test="degree != null">
+        #{degree,jdbcType=VARCHAR},
+      </if>
+      <if test="nationality != null">
+        #{nationality,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyId != null">
+        #{modifyId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=DATE},
+      </if>
+      <if test="deleteId != null">
+        #{deleteId,jdbcType=INTEGER},
+      </if>
+      <if test="deleteTime != null">
+        #{deleteTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  
+   <select id="selectByPrimaryKeySelective" parameterType="swu.edu.cn.entity.StudentBaseInfo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from studentbaseinfo
+    where 1=1 
+    <if test="classId != null">
+       and class_id = #{classId,jdbcType=INTEGER}
+    </if>
+    <if test="major != null">
+       and major = #{major,jdbcType=varchar}
+    </if>
+    
+<!--      <if test="name != null">
+       and name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="code != null">
+       and code = #{code,jdbcType=VARCHAR}
+      </if>
+      <if test="nikename != null">
+        and nikename = #{nikename,jdbcType=VARCHAR}
+      </if>
+      <if test="address != null">
+       and address = #{address,jdbcType=VARCHAR}
+      </if>
+      <if test="sex != null">
+       and  sex = #{sex,jdbcType=CHAR}
+      </if>
+      <if test="dayofbirth != null">
+       and  dayofbirth = #{dayofbirth,jdbcType=DATE}
+      </if>
+      <if test="phone != null">
+      and   phone = #{phone,jdbcType=VARCHAR}
+      </if>
+      <if test="exmail != null">
+       and  exmail = #{exmail,jdbcType=VARCHAR}
+      </if>
+      <if test="roleId != null">
+       and  role_id = #{roleId,jdbcType=INTEGER}
+      </if>
+      <if test="inputId != null">
+      and   inputId = #{inputId,jdbcType=INTEGER}
+      </if>
+      <if test="inputTime != null">
+      and   inputTime = #{inputTime,jdbcType=DATE}
+      </if>
+      <if test="password != null">
+     and    password = #{password,jdbcType=VARCHAR}
+      </if>
+      <if test="enrollmentyear != null">
+      and   enrollmentYear = #{enrollmentyear,jdbcType=DATE}
+      </if>
+      <if test="schoolrollStatus != null">
+      and   schoolRoll_status = #{schoolrollStatus,jdbcType=INTEGER}
+      </if>
+      <if test="ethnic != null">
+      and   ethnic = #{ethnic,jdbcType=VARCHAR}
+      </if>
+      <if test="politicalstatus != null">
+     and    politicalstatus = #{politicalstatus,jdbcType=VARCHAR}
+      </if> -->
+      
+  </select>
+  <update id="updateByPrimaryKeySelective" parameterType="swu.edu.cn.entity.StudentBaseInfo">
+    update studentbaseinfo
+    <set>
+       <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="nikename != null">
+        nikename = #{nikename,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="dayofbirth != null">
+        dayofbirth = #{dayofbirth,jdbcType=DATE},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="exmail != null">
+        exmail = #{exmail,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="inputId != null">
+        Input_id = #{inputId,jdbcType=INTEGER},
+      </if>
+      <if test="inputTime != null">
+        Input_time = #{inputTime,jdbcType=DATE},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="enrollmentyear != null">
+        enrollmentYear = #{enrollmentyear,jdbcType=DATE},
+      </if>
+      <if test="schoolrollStatus != null">
+        schoolRoll_status = #{schoolrollStatus,jdbcType=INTEGER},
+      </if>
+      <if test="ethnic != null">
+        ethnic = #{ethnic,jdbcType=VARCHAR},
+      </if>
+      <if test="politicalstatus != null">
+        politicalstatus = #{politicalstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="classId != null">
+        class_id = #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="major != null">
+        major = #{major,jdbcType=VARCHAR},
+      </if>
+      <if test="degree != null">
+        degree = #{degree,jdbcType=VARCHAR},
+      </if>
+      <if test="nationality != null">
+        nationality = #{nationality,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyId != null">
+        Modify_id = #{modifyId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyTime != null">
+        Modify_time = #{modifyTime,jdbcType=DATE},
+      </if>
+      <if test="deleteId != null">
+        Delete_id = #{deleteId,jdbcType=INTEGER},
+      </if>
+      <if test="deleteTime != null">
+        Delete_time = #{deleteTime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
