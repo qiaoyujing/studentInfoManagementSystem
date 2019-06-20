@@ -32,7 +32,7 @@ public class LoginController {
 
     private static Logger log=Logger.getLogger(StudentBaseInfoController.class);
     
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public void LoginCheck(@ModelAttribute("form") Account account, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         
